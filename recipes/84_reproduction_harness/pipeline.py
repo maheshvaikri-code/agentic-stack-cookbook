@@ -91,6 +91,17 @@ def run_recipe(recipe: Path) -> str:
     return proc.stdout.decode("utf-8", errors="replace")
 
 
+def was_skipped(output: str) -> bool:
+    """A recipe that skipped for a missing optional dependency.
+
+    It exits 0 having printed only its SKIP line, so its documented output
+    is legitimately absent. Treating that as drift would make this harness
+    fail the whole suite on any Python without the 3.12-only wheels, which
+    is exactly what it did the first time it ran in CI.
+    """
+    return bool(re.search(r"^recipe \S+: SKIP\b", output.strip(), re.M))
+
+
 def tamper(block: str):
     """Change one digit, so a verified block becomes a false one."""
     for i, ch in enumerate(block):
@@ -111,6 +122,10 @@ def audit():
                          "checked": 0, "missing": []})
             continue
         output = run_recipe(recipe)
+        if was_skipped(output):
+            rows.append({"recipe": recipe.name, "state": "skipped (deps)",
+                         "checked": 0, "missing": []})
+            continue
         missing = verify(block, output)
         rows.append({
             "recipe": recipe.name,
@@ -132,6 +147,7 @@ def main():
     verified = [r for r in rows if r["state"] == "verified"]
     drifted = [r for r in rows if r["state"] == "DRIFT"]
     undocumented = [r for r in rows if r["state"] == "no sample output"]
+    skipped = [r for r in rows if r["state"] == "skipped (deps)"]
     total_lines = sum(r["checked"] for r in rows)
 
     # The harness must be able to fail, or its OKs mean nothing.
@@ -162,6 +178,7 @@ def main():
             f"recipe 84: all checks passed "
             f"({len(verified)} recipes verified, {total_lines} claim lines matched "
             f"against live output, {proofs} proved detectable by tampering"
+            + (f", {len(skipped)} skipped for missing deps" if skipped else "")
             + (f", {len(undocumented)} without a sample-output section"
                if undocumented else "")
             + ")"
@@ -183,6 +200,14 @@ def main():
     print(f"\n--- Proving the harness can fail ---")
     print(f"  {proofs} verified block(s) re-checked with one digit changed;")
     print("  every one was rejected. A checker that cannot fail is not a check.")
+
+    if skipped:
+        print(f"\n--- Skipped: optional dependency unavailable on this Python ---")
+        for row in skipped:
+            print(f"  {row['recipe']}")
+        print("  These exited 0 having printed only their SKIP line, so their")
+        print("  documented output is legitimately absent rather than stale.")
+        print("  Run on Python 3.12 to verify them.")
 
     if undocumented:
         print(f"\n--- Recipes with no sample-output section ---")

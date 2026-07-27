@@ -33,8 +33,8 @@ Standard library only. No API key, no network, no model call.
 
 ## What it proves
 
-1. **The `hash()` trap is real, and proven from outside the process.** The recipe re-executes itself twice under `PYTHONHASHSEED=0` and `PYTHONHASHSEED=1` and asserts the naive stub's output *differs*. Determinism claims that only compare two calls in one process cannot catch this, because within a process `hash()` is perfectly stable — which is exactly why the bug survives review.
-2. **`FakeModel` is stable across those same two processes**, and its subprocess output matches its in-process output byte for byte.
+1. **The `hash()` trap is real, and proven from outside the process.** The recipe re-executes itself under six different `PYTHONHASHSEED` values and asserts the naive stub does not give the same answer to all of them. Determinism claims that only compare two calls in one process cannot catch this, because within a process `hash()` is perfectly stable — which is exactly why the bug survives review. It sweeps six seeds rather than trusting two because the response pool is small enough that any particular pair can collide by chance on a given platform, and a flaky assertion inside a recipe about determinism would be its own kind of embarrassing.
+2. **`FakeModel` is stable across all six**, and its subprocess output matches its in-process output byte for byte.
 3. **The naive stub gives a false green.** The agent under test has a real bug: it calls `json.loads` on the raw completion. The assertion requires the naive stub to *pass* it — a double that cannot fail the buggy agent is the thing being argued against.
 4. **Each scripted failure catches it.** `wrapped`, `truncated`, and `refusal` are each asserted to fail the same agent. These aren't invented failure modes; they're what models actually do.
 5. **Scripting does not leak.** A pinned prompt returns exactly its pinned response, and an unscripted prompt returns the configured behaviour instead.
@@ -42,12 +42,10 @@ Standard library only. No API key, no network, no model call.
 ## Sample output
 
 ```
---- Same double, two processes, different PYTHONHASHSEED ---
-  NaiveStub  seed=0 -> {"items": ["widget", "gadget"]}
-  NaiveStub  seed=1 -> {"summary": "disk filled", "severity": "high
     identical: [NO]  <- silently unstable
   FakeModel  seed=0 -> {"order_id": "A-1001", "total": 42.5}
   FakeModel  seed=1 -> {"order_id": "A-1001", "total": 42.5}
+  FakeModel  distinct outputs across seeds: 1 of 6
     identical: [OK]
 
 --- The agent under test trusts the model to return bare JSON ---
@@ -61,6 +59,8 @@ Standard library only. No API key, no network, no model call.
 ```
 
 The naive stub is always well-formed, so the suite is green and the bug ships.
+
+The `NaiveStub` response lines are omitted from that block on purpose, and the reason is the recipe's own point turning up in its documentation. `hash()` is not merely salted per process — its result also differs by platform and interpreter version, so the value this recipe printed on Windows is not the value CI prints on Linux. Quoting it made the reproduction harness ([recipe 84](../84_reproduction_harness/)) fail on the CI leg, correctly. `FakeModel`'s lines are quotable because `blake2b` gives the same answer everywhere, which is the entire argument.
 
 ## Using it in your own tests
 

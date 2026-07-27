@@ -193,10 +193,15 @@ def main():
         return 0
 
     # -- determinism across processes, under different hash seeds -----------
-    naive_a = emit_under_seed("naive", "0")
-    naive_b = emit_under_seed("naive", "1")
-    fake_a = emit_under_seed("fake", "0")
-    fake_b = emit_under_seed("fake", "1")
+    # Sweep several seeds rather than trusting two. The response pool is
+    # small, so any particular pair of seeds can collide by chance on a
+    # given platform -- and a flaky assertion in a recipe about determinism
+    # would be its own kind of embarrassing.
+    SEEDS = ("0", "1", "2", "3", "5", "8")
+    naive_runs = {s: emit_under_seed("naive", s) for s in SEEDS}
+    fake_runs = {s: emit_under_seed("fake", s) for s in SEEDS}
+    naive_a, naive_b = naive_runs["0"], naive_runs["1"]
+    fake_a, fake_b = fake_runs["0"], fake_runs["1"]
 
     # -- what each double lets through --------------------------------------
     naive_green = suite_passes(NaiveStub())
@@ -212,11 +217,11 @@ def main():
     scripted_miss = scripted.complete(PROMPTS[1])
 
     # --- assertions (always enforced) ---
-    assert naive_a != naive_b, (
-        "hash()-based stub returned the same thing under two hash seeds; "
-        "the trap this recipe exists to demonstrate did not arm"
+    assert len(set(naive_runs.values())) > 1, (
+        f"hash()-based stub gave identical output under all {len(SEEDS)} hash "
+        f"seeds; the trap this recipe exists to demonstrate did not arm"
     )
-    assert fake_a == fake_b, (
+    assert len(set(fake_runs.values())) == 1, (
         "FakeModel is not stable across processes under different hash seeds"
     )
     assert fake_a == emit("fake"), "in-process and subprocess output disagree"
@@ -249,13 +254,15 @@ def main():
     print("Recipe 17: Deterministic fake model for testing")
     print("=" * 70)
 
-    print("\n--- Same double, two processes, different PYTHONHASHSEED ---")
-    print(f"  NaiveStub  seed=0 -> {naive_a.splitlines()[0][:44]}")
-    print(f"  NaiveStub  seed=1 -> {naive_b.splitlines()[0][:44]}")
-    print(f"    identical: {'[OK]' if naive_a == naive_b else '[NO]  <- silently unstable'}")
+    print(f"\n--- Same double, {len(SEEDS)} processes, different PYTHONHASHSEED ---")
+    print(f"  NaiveStub  distinct outputs across seeds: "
+          f"{len(set(naive_runs.values()))} of {len(SEEDS)}")
+    print(f"    identical: {'[OK]' if len(set(naive_runs.values())) == 1 else '[NO]  <- silently unstable'}")
     print(f"  FakeModel  seed=0 -> {fake_a.splitlines()[0][:44]}")
     print(f"  FakeModel  seed=1 -> {fake_b.splitlines()[0][:44]}")
-    print(f"    identical: {'[OK]' if fake_a == fake_b else '[NO]'}")
+    print(f"  FakeModel  distinct outputs across seeds: "
+          f"{len(set(fake_runs.values()))} of {len(SEEDS)}")
+    print(f"    identical: {'[OK]' if len(set(fake_runs.values())) == 1 else '[NO]'}")
     print("  => hash() is salted per process. A stub built on it is")
     print("     reproducible within one run and not between runs, which is")
     print("     the worst of both: green locally, red in CI, no explanation.")

@@ -38,6 +38,7 @@ Standard library only. No API key, no network. It runs every sibling recipe, so 
 2. **The harness can fail.** For every verified block, one digit is changed and verification is asserted to reject the result. Without this the suite would pass just as happily if `verify()` returned `[]` unconditionally.
 3. **It is not vacuous.** Assertions require that something was verified, that at least one tamper proof ran, and that more than 50 claim lines were checked — so a harness that quietly stopped finding recipes fails instead of reporting success.
 4. **Missing documentation is visible, not silent.** A recipe with no sample-output section is reported by name rather than skipped.
+5. **A skipped recipe is not drift.** Recipes needing the 3.12-only wheels exit 0 having printed only their `SKIP` line, so their documented output is legitimately absent. The harness detects that and reports `skipped (deps)`. Getting this wrong is what broke CI the first time this recipe ran: on the Python 3.10 leg it called three skipped recipes drifted and failed the build.
 
 ## Sample output
 
@@ -51,9 +52,12 @@ Standard library only. No API key, no network. It runs every sibling recipe, so 
   06_multi_repo_agent_context            19  verified
   07_okf_knowledge_bundle                12  verified
   08_context_recall_benchmark             9  verified
-  17_deterministic_fake_model            15  verified
-  TOTAL                                 137
+  09_agent_loop_from_scratch              9  verified
+  17_deterministic_fake_model            13  verified
+  TOTAL                                 144
 ```
+
+On a Python without the 3.12-only wheels, the recipes needing them report `skipped (deps)` instead and the total falls to 111 across 7 recipes.
 
 ## What it does not check
 
@@ -63,6 +67,8 @@ Worth stating plainly, because a green harness invites more trust than it has ea
 - **Only that documented lines appear in the output** — not that the output contains nothing else, and not that a recipe's claims are *meaningful*. A recipe asserting something trivially true passes here.
 - **Lines shorter than 12 characters are skipped** as punctuation or table rules, so a very short claim escapes checking.
 - **Whitespace is normalized** before comparison, so column alignment can drift without detection.
+- **It cannot audit itself.** This recipe is excluded to avoid recursing into its own subprocess, so its sample output above is the one block in the repo nothing verifies.
+- **It only sees the Python it runs on.** A sample block quoting a platform-dependent value passes locally and fails on another interpreter. That is not hypothetical either: recipe 17's README quoted a `hash()`-derived response, which is stable per process but differs across platforms, and it took the CI Linux leg to catch it.
 
 The honest summary: this catches documentation that has gone stale, which is the failure that actually happens. It is not a proof that a recipe is correct.
 
