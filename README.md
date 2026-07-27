@@ -66,6 +66,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | Recipe | Scenario | Uses | Status |
 |--------|----------|------|--------|
 | [Context-recall benchmark](recipes/08_context_recall_benchmark/) | "edges help retrieval" deserves a number: 7 domains, gold sets authored before any store ran | RudraDB | ✅ in CI |
+| [Retriever-in-the-loop benchmark](recipes/78_retriever_in_the_loop/) | format benchmarks measure encoding in isolation; put a real retriever in front and report the gap | RudraDB + ISONGraph + Contexel | ✅ in CI |
 | [Reproduction harness](recipes/84_reproduction_harness/) | re-derives every documented number by running the recipe, and proves it can fail | stdlib only | ✅ in CI |
 
 Want a recipe that is not listed? [Open an issue](https://github.com/maheshvaikri-code/agentic-stack-cookbook/issues/new) describing the scenario, or better, [contribute it](CONTRIBUTING.md).
