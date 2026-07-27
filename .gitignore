@@ -1,3 +1,6 @@
 __pycache__/
 *.pyc
 .venv/
+
+# Local work queue for the repo agent. Not published.
+IdeaBook.md
