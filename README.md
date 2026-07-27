@@ -35,7 +35,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | # | Recipe | Scenario | Uses | Status |
 |---|--------|----------|------|--------|
 | 01 | [Token-efficient GraphRAG context](recipes/01_token_efficient_graphrag/) | retrieval output is noisy and over budget; shape it deterministically, encode it compactly | Contexel + ISONGraph | ✅ in CI |
-| 02 | Relationship-aware retrieval | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | 🔜 planned |
+| 02 | [Relationship-aware retrieval](recipes/02_relationship_aware_retrieval/) | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | ✅ in CI |
 | 03 | Deterministic context budgets | same agent, same inputs, byte-identical prompts across runs | Contexel | 🔜 planned |
 | 04 | Multi-agent handoff | two agents exchange typed, validated messages instead of prose | MAPLE | 🔜 planned |
 | 05 | Flat-data token diet | tool outputs as ISON instead of JSON, measured savings | ISON | 🔜 planned |
