@@ -45,6 +45,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 |--------|----------|------|--------|
 | [Chunking strategies, measured](recipes/23_chunking_strategies_measured/) | four chunkers, two corpora, gold spans authored first — and the winner changes | stdlib only | ✅ in CI |
 | [The chunk that lost its header](recipes/24_chunk_that_lost_its_header/) | `\| silver \| 30 \| no \|` — thirty what? unanswerable, and it retrieves beautifully | ISON | ✅ in CI |
+| [Overlap is not free](recipes/25_overlap_is_not_free/) | sweep it and the curve is not monotonic: more overlap moves every boundary, and can lose a span | stdlib only | ✅ in CI |
 | [Relationship-aware retrieval](recipes/02_relationship_aware_retrieval/) | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | ✅ in CI |
 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
 
