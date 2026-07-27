@@ -81,7 +81,7 @@ Contributions are genuinely welcome, first-timers included. The bar is the contr
 
 <p align="center">
   <a href="https://github.com/maheshvaikri-code/agentic-stack-cookbook/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=maheshvaikri-code/agentic-stack-cookbook" alt="Contributors" />
+    <img src="https://img.shields.io/github/contributors/maheshvaikri-code/agentic-stack-cookbook?color=5ac8fa&label=contributors" alt="Contributors" />
   </a>
 </p>
 
