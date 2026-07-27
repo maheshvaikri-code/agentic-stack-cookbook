@@ -40,6 +40,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | 04 | [Multi-agent handoff](recipes/04_multi_agent_handoff/) | two agents exchange typed, validated messages instead of prose | MAPLE | ✅ in CI |
 | 05 | [Flat-data token diet](recipes/05_flat_data_token_diet/) | tool outputs as ISON instead of JSON, measured savings | ISON | ✅ in CI |
 | 06 | [Multi-repo agent context](recipes/06_multi_repo_agent_context/) | feed several repos' code into one agent context within budget | Contexel + ISON | ✅ in CI |
+| 07 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
 
 Want a recipe that is not listed? [Open an issue](https://github.com/maheshvaikri-code/agentic-stack-cookbook/issues/new) describing the scenario, or better, [contribute it](CONTRIBUTING.md).
 
