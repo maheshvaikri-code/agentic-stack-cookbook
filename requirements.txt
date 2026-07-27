@@ -1,5 +1,6 @@
 contexel>=0.1.15
 ison-py>=1.0
 ison-graph>=1.0
+maple-oss>=1.1.2
 numpy; python_version >= "3.12"
 rudradb-opin>=1.2.0; python_version >= "3.12"
