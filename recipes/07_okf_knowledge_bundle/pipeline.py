@@ -73,6 +73,9 @@ def main():
               f"link-only evidence surfaced)")
         return 0
 
+    # demo.py pins its own stdout; this wrapper relays that text, so it has to
+    # pin its own too or Windows' legacy code page rejects the arrows.
+    sys.stdout.reconfigure(encoding="utf-8", newline="\n")
     sys.stdout.write(text)
     print(f"\n[pipeline] stdout sha256: {digest}")
     return 0

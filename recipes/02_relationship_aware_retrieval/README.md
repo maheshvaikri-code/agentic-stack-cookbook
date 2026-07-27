@@ -43,7 +43,8 @@ No API key, no network. On Pythons without a `rudradb-opin` wheel the recipe pri
   blog/rehash_b              What scaling laws mean for your model size
   blog/rehash_a              Scaling laws explained simply
   paper/scaling_2020         Scaling laws for neural language models
-  => the echo chamber. The 2022 revision is nowhere in sight.
+  => the echo chamber: the 2020 answer and its paraphrases.
+     The 2022 revision that corrects it is nowhere in sight.
 
 --- Graph search (relationships ON, max_hops=2) ---
   paper/scaling_2020         Scaling laws for neural language models

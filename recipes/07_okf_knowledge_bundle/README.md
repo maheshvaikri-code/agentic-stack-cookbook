@@ -20,4 +20,24 @@ python pipeline.py --check        # CI mode
 2. **Link-only evidence is real**: assertions require that `kyc_register` and `party_master` appear in the relationship-aware results. If an engine change stops surfacing link-only evidence, CI fails.
 3. **The bundle is honest OKF**: 7 concepts, 12 typed edges, parsed from `bundle/` exactly as the spec intends.
 
+## Sample output
+
+```
+  A. FLAT vector search (any vector DB can do this)
+  policies/basel_definitions          0.350  0.000  0.350    0  vector match
+  tables/facility_ledger              0.237  0.000  0.237    0  vector match
+  metrics/exposure_at_default         0.192  0.000  0.192    0  vector match
+  runbooks/eod_break_runbook          0.114  0.000  0.114    0  vector match
+
+  B. RELATIONSHIP-AWARE search (one call: search + follow the links)
+  policies/basel_definitions          0.350  0.450  0.385    0  match + GRAPH
+  tables/facility_ledger              0.237  0.475  0.320    0  match + GRAPH
+  metrics/exposure_at_default         0.192  0.450  0.282    0  match + GRAPH
+  tables/party_master                 0.105  0.450  0.226    0  match + GRAPH
+  runbooks/eod_break_runbook          0.114  0.425  0.223    0  match + GRAPH
+  tables/kyc_register                 0.038  0.450  0.182    1  GRAPH ← link
+```
+
+The join path (`party_master`) and the restricted upstream table (`kyc_register`) are both missing from the flat top-4. `kyc_register` scores 0.038 on similarity: it is reachable through the typed link and essentially nothing else.
+
 Credit: migrated from the standalone `rudradb_okf_demo` working example.

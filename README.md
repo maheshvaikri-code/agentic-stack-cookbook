@@ -43,6 +43,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | 07 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
 | 08 | [Context-recall benchmark](recipes/08_context_recall_benchmark/) | "edges help retrieval" deserves a number: 7 domains, gold sets authored before any store ran | RudraDB | ✅ in CI |
 | 17 | [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
+| 84 | [Reproduction harness](recipes/84_reproduction_harness/) | re-derives every documented number by running the recipe, and proves it can fail | stdlib only | ✅ in CI |
 
 Recipe numbers are permanent slots, not a reading order, so the table has gaps. A shipped recipe is never renumbered, and the next one takes whichever number its scenario was assigned.
 
