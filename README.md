@@ -32,21 +32,41 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 
 ## 📖 Recipes
 
-| # | Recipe | Scenario | Uses | Status |
-|---|--------|----------|------|--------|
-| 01 | [Token-efficient GraphRAG context](recipes/01_token_efficient_graphrag/) | retrieval output is noisy and over budget; shape it deterministically, encode it compactly | Contexel + ISONGraph | ✅ in CI |
-| 02 | [Relationship-aware retrieval](recipes/02_relationship_aware_retrieval/) | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | ✅ in CI |
-| 03 | [Deterministic context budgets](recipes/03_deterministic_context_budgets/) | same agent, same inputs, byte-identical prompts across runs | Contexel | ✅ in CI |
-| 04 | [Multi-agent handoff](recipes/04_multi_agent_handoff/) | two agents exchange typed, validated messages instead of prose | MAPLE | ✅ in CI |
-| 05 | [Flat-data token diet](recipes/05_flat_data_token_diet/) | tool outputs as ISON instead of JSON, measured savings | ISON | ✅ in CI |
-| 06 | [Multi-repo agent context](recipes/06_multi_repo_agent_context/) | feed several repos' code into one agent context within budget | Contexel + ISON | ✅ in CI |
-| 07 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
-| 08 | [Context-recall benchmark](recipes/08_context_recall_benchmark/) | "edges help retrieval" deserves a number: 7 domains, gold sets authored before any store ran | RudraDB | ✅ in CI |
-| 09 | [The agent loop, from scratch](recipes/09_agent_loop_from_scratch/) | `for _ in range(MAX_STEPS)` is a guard, not a termination condition; one step too many returns a partial answer shaped like a complete one | stdlib only | ✅ in CI |
-| 17 | [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
-| 84 | [Reproduction harness](recipes/84_reproduction_harness/) | re-derives every documented number by running the recipe, and proves it can fail | stdlib only | ✅ in CI |
+### Core agent patterns
 
-Recipe numbers are permanent slots, not a reading order, so the table has gaps. A shipped recipe is never renumbered, and the next one takes whichever number its scenario was assigned.
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [The agent loop, from scratch](recipes/09_agent_loop_from_scratch/) | `for _ in range(MAX_STEPS)` is a guard, not a termination condition; one step too many returns a partial answer shaped like a complete one | stdlib only | ✅ in CI |
+| [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
+
+### Retrieval and RAG
+
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [Relationship-aware retrieval](recipes/02_relationship_aware_retrieval/) | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | ✅ in CI |
+| [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
+
+### Context engineering and token economics
+
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [Token-efficient GraphRAG context](recipes/01_token_efficient_graphrag/) | retrieval output is noisy and over budget; shape it deterministically, encode it compactly | Contexel + ISONGraph | ✅ in CI |
+| [Deterministic context budgets](recipes/03_deterministic_context_budgets/) | same agent, same inputs, byte-identical prompts across runs | Contexel | ✅ in CI |
+| [Flat-data token diet](recipes/05_flat_data_token_diet/) | tool outputs as ISON instead of JSON, measured savings | ISON | ✅ in CI |
+| [Multi-repo agent context](recipes/06_multi_repo_agent_context/) | feed several repos' code into one agent context within budget | Contexel + ISON | ✅ in CI |
+
+### Structured output, tools, and protocols
+
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [Multi-agent handoff](recipes/04_multi_agent_handoff/) | two agents exchange typed, validated messages instead of prose | MAPLE | ✅ in CI |
+
+### Evaluation and benchmarking
+
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [Context-recall benchmark](recipes/08_context_recall_benchmark/) | "edges help retrieval" deserves a number: 7 domains, gold sets authored before any store ran | RudraDB | ✅ in CI |
+| [Reproduction harness](recipes/84_reproduction_harness/) | re-derives every documented number by running the recipe, and proves it can fail | stdlib only | ✅ in CI |
 
 Want a recipe that is not listed? [Open an issue](https://github.com/maheshvaikri-code/agentic-stack-cookbook/issues/new) describing the scenario, or better, [contribute it](CONTRIBUTING.md).
 
