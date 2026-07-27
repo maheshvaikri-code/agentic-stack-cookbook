@@ -42,6 +42,9 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | 06 | [Multi-repo agent context](recipes/06_multi_repo_agent_context/) | feed several repos' code into one agent context within budget | Contexel + ISON | ✅ in CI |
 | 07 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
 | 08 | [Context-recall benchmark](recipes/08_context_recall_benchmark/) | "edges help retrieval" deserves a number: 7 domains, gold sets authored before any store ran | RudraDB | ✅ in CI |
+| 17 | [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
+
+Recipe numbers are permanent slots, not a reading order, so the table has gaps. A shipped recipe is never renumbered, and the next one takes whichever number its scenario was assigned.
 
 Want a recipe that is not listed? [Open an issue](https://github.com/maheshvaikri-code/agentic-stack-cookbook/issues/new) describing the scenario, or better, [contribute it](CONTRIBUTING.md).
 
