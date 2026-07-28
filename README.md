@@ -75,6 +75,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 
 | Recipe | Scenario | Uses | Status |
 |--------|----------|------|--------|
+| [Every dropped record is explainable](recipes/87_every_dropped_record_explainable/) | "was the policy doc even in the context?" — a complete, disjoint partition that answers it | Contexel | ✅ in CI |
 | [Prompt injection from documents](recipes/85_prompt_injection_from_documents/) | a retrieved document says "ignore all previous instructions"; make document text structurally unable to reach instruction position | stdlib only | ✅ in CI |
 
 ### Evaluation and benchmarking
