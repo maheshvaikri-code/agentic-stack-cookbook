@@ -50,6 +50,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | [Overlap is not free](recipes/25_overlap_is_not_free/) | sweep it and the curve is not monotonic: more overlap moves every boundary, and can lose a span | stdlib only | ✅ in CI |
 | [Hybrid keyword + vector](recipes/28_hybrid_keyword_vector/) | an embedding cannot find `ERR_4021`; BM25 cannot find a paraphrase; fuse the two by rank, not by score | stdlib only | ✅ in CI |
 | [Stale answers and freshness](recipes/32_stale_answers_freshness/) | last year's answer still wins on wording; demote it, but never silently delete it | stdlib only | ✅ in CI |
+| [Filters that return nothing](recipes/33_filters_that_return_nothing/) | zero results is a successful query; the prompt looks identical and the model answers from nothing | stdlib only | ✅ in CI |
 | [Relationship-aware retrieval](recipes/02_relationship_aware_retrieval/) | similarity search returns lookalikes; follow graph edges to grounded evidence | RudraDB + ISONGraph | ✅ in CI |
 | [OKF knowledge bundle](recipes/07_okf_knowledge_bundle/) | Google's Open Knowledge Format says filter, search, then *follow the links*; serve all three from one query | RudraDB | ✅ in CI |
 
