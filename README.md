@@ -69,6 +69,12 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 |--------|----------|------|--------|
 | [Multi-agent handoff](recipes/04_multi_agent_handoff/) | two agents exchange typed, validated messages instead of prose | MAPLE | ✅ in CI |
 
+### Governance, safety, and audit
+
+| Recipe | Scenario | Uses | Status |
+|--------|----------|------|--------|
+| [Prompt injection from documents](recipes/85_prompt_injection_from_documents/) | a retrieved document says "ignore all previous instructions"; make document text structurally unable to reach instruction position | stdlib only | ✅ in CI |
+
 ### Evaluation and benchmarking
 
 | Recipe | Scenario | Uses | Status |
