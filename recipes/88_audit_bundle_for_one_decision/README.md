@@ -41,7 +41,7 @@ No API key, no network, no model call.
   retained             kb/refund_faq, kb/returns_intro, policy/refund_window
   dropped              1
                          kb/store_credit by trim_to_budget(max_tokens=130)
-  size on disk         2119 bytes
+  size on disk         2053 bytes
 
 --- Replay, in a separate process, given only the file path ---
   original sha256 : 7940f8365f73d4ed
@@ -88,4 +88,5 @@ The bundle stays readable and replayable without importing the module that made 
 - **Replay needs the stage implementations to still behave the same.** The policy travels as data, but `trim_to_budget` itself does not. A Contexel upgrade that changed trimming semantics would replay differently — the bundle would then be evidence that the *behaviour* changed, which is useful, but it is not self-contained against the library.
 - **The bundle holds inputs verbatim.** That is what makes replay work, and it means the bundle inherits whatever the records contain — including anything you would rather not retain. Pair this with redaction ahead of bundling, not after.
 - **One decision per bundle.** At 2 KB for five records this is cheap for a sampled or flagged decision, and not something to emit on every request without thinking about volume.
+- **The bundle's line endings are pinned on write.** Without that the same bundle is a different size on the machine that produced it, which CI caught when the README quoted a Windows byte count that the Linux runner disagreed with. The size is now asserted to equal the serialized text exactly, so a future translation shows up as a failure rather than as a number nobody checks.
 - **It preserves what was sent, not whether it was right.** The bundle proves which evidence reached the model. Whether the answer followed from it is a separate question, and the bundle is the thing that lets you ask it precisely.

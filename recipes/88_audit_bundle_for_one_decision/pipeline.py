@@ -154,7 +154,14 @@ def main():
 
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "bundle.json"
-        path.write_text(json.dumps(bundle, indent=2), encoding="utf-8")
+        # Pinning the newline is load-bearing, not tidiness. Without it,
+        # Windows translates line endings on write, so the same bundle is a
+        # different size on disk depending on which machine produced it --
+        # and a byte count that depends on the OS is a poor property for an
+        # audit artefact. CI caught exactly that: the README quoted the
+        # Windows figure and the Linux runner disagreed.
+        serialized = json.dumps(bundle, indent=2)
+        path.write_text(serialized, encoding="utf-8", newline="\n")
 
         proc = subprocess.run(
             [sys.executable, str(HERE), "--replay", str(path)],
@@ -168,7 +175,8 @@ def main():
         tampered["inputs"][0]["text"] = tampered["inputs"][0]["text"].replace(
             "30 days", "14 days")
         tpath = Path(tmp) / "tampered.json"
-        tpath.write_text(json.dumps(tampered, indent=2), encoding="utf-8")
+        tpath.write_text(json.dumps(tampered, indent=2),
+                         encoding="utf-8", newline="\n")
         tproc = subprocess.run(
             [sys.executable, str(HERE), "--replay", str(tpath)],
             capture_output=True, timeout=120,
@@ -176,6 +184,7 @@ def main():
         tampered_replay = tproc.stdout.decode("utf-8")
 
         bundle_bytes = path.stat().st_size
+        serialized_bytes = len(serialized.encode("utf-8"))
 
     # A different policy must produce a different fingerprint.
     other_policy = [dict(p) for p in POLICY]
@@ -210,6 +219,11 @@ def main():
     )
     assert "14 days" in tampered_replay, "the tamper did not reach the output"
 
+    assert bundle_bytes == serialized_bytes, (
+        f"the bundle is {bundle_bytes} bytes on disk but {serialized_bytes} "
+        f"as text: something translated its line endings, so its size depends "
+        f"on the machine that wrote it"
+    )
     assert make_bundle(RECORDS, POLICY) == bundle, "the bundle is not deterministic"
 
     if args.check:
