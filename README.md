@@ -37,6 +37,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | Recipe | Scenario | Uses | Status |
 |--------|----------|------|--------|
 | [The agent loop, from scratch](recipes/09_agent_loop_from_scratch/) | `for _ in range(MAX_STEPS)` is a guard, not a termination condition; one step too many returns a partial answer shaped like a complete one | stdlib only | ✅ in CI |
+| [Parsing that fails loudly](recipes/18_parsing_that_fails_loudly/) | eager repair returns valid JSON with data missing; refuse what has more than one meaning | stdlib only | ✅ in CI |
 | [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
 
 ### Retrieval and RAG
