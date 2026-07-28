@@ -55,6 +55,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 
 | Recipe | Scenario | Uses | Status |
 |--------|----------|------|--------|
+| [Where your context window went](recipes/37_where_the_context_went/) | your ledger doesn't reconcile: the seams are 17% and token counts aren't additive | Contexel | ✅ in CI |
 | [Token-efficient GraphRAG context](recipes/01_token_efficient_graphrag/) | retrieval output is noisy and over budget; shape it deterministically, encode it compactly | Contexel + ISONGraph | ✅ in CI |
 | [Deterministic context budgets](recipes/03_deterministic_context_budgets/) | same agent, same inputs, byte-identical prompts across runs | Contexel | ✅ in CI |
 | [Flat-data token diet](recipes/05_flat_data_token_diet/) | tool outputs as ISON instead of JSON, measured savings | ISON | ✅ in CI |
