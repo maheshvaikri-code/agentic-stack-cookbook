@@ -37,6 +37,7 @@ python recipes/01_token_efficient_graphrag/pipeline.py
 | Recipe | Scenario | Uses | Status |
 |--------|----------|------|--------|
 | [The agent loop, from scratch](recipes/09_agent_loop_from_scratch/) | `for _ in range(MAX_STEPS)` is a guard, not a termination condition; one step too many returns a partial answer shaped like a complete one | stdlib only | ✅ in CI |
+| [Idempotency keys](recipes/19_idempotency_keys/) | check-then-act is idempotent *most of the time*; reserve before you act, and say `in_flight` when you don't know | stdlib only | ✅ in CI |
 | [Why your agent loops forever](recipes/10_why_your_agent_loops_forever/) | polling and a stuck model produce the same trace; only a progress measure tells them apart | stdlib only | ✅ in CI |
 | [Parsing that fails loudly](recipes/18_parsing_that_fails_loudly/) | eager repair returns valid JSON with data missing; refuse what has more than one meaning | stdlib only | ✅ in CI |
 | [Deterministic fake model](recipes/17_deterministic_fake_model/) | your test stub picks with `hash()` and is always well-formed; both make the suite lie | stdlib only | ✅ in CI |
